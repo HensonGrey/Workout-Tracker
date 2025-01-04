@@ -48,7 +48,6 @@ const ProgramScreen = ({ navigation }: any) => {
         title="blank"
         icon={PlusIcon}
         isBlank
-        onPress={() => {}}
         onIconPress={() => addTrainingDay()}
       ></TrainingDayComponent>
     </SafeAreaView>

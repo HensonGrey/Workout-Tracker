@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
-  Text,
+  TextInput,
   TouchableOpacity,
   Image,
   ImageSourcePropType,
@@ -11,7 +11,7 @@ interface TrainingDayProps {
   title: string;
   icon: ImageSourcePropType;
   isBlank?: boolean;
-  onPress(): void;
+  onPress?(): void;
   onIconPress(): void;
 }
 
@@ -22,6 +22,8 @@ const TrainingDayComponent: React.FC<TrainingDayProps> = ({
   onPress,
   onIconPress,
 }) => {
+  const [text, setText] = useState<any>("");
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -29,11 +31,13 @@ const TrainingDayComponent: React.FC<TrainingDayProps> = ({
         isBlank ? "bg-gray-600" : "bg-gray-200"
       }`}
     >
-      <Text
+      <TextInput
+        value={text}
+        onChangeText={(newText) => setText(newText)}
+        placeholder={`${isBlank ? "Blank" : "Click to edit"}`}
+        editable={false}
         className={`text-2xl pl-4 align-middle ${isBlank ? "text-white" : ""}`}
-      >
-        {title}
-      </Text>
+      ></TextInput>
       <TouchableOpacity onPress={onIconPress}>
         <View
           className={`border-2 rounded-full p-2 ${
