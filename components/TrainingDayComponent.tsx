@@ -12,6 +12,7 @@ interface TrainingDayProps {
   icon: ImageSourcePropType;
   isBlank?: boolean;
   onPress(): void;
+  onIconPress(): void;
 }
 
 const TrainingDayComponent: React.FC<TrainingDayProps> = ({
@@ -19,9 +20,11 @@ const TrainingDayComponent: React.FC<TrainingDayProps> = ({
   icon,
   isBlank,
   onPress,
+  onIconPress,
 }) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       className={`p-3 flex flex-row justify-between border-2 border-gray-500 rounded-lg ${
         isBlank ? "bg-gray-600" : "bg-gray-200"
       }`}
@@ -31,7 +34,7 @@ const TrainingDayComponent: React.FC<TrainingDayProps> = ({
       >
         {title}
       </Text>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onIconPress}>
         <View
           className={`border-2 rounded-full p-2 ${
             isBlank ? "bg-gray-200" : ""

@@ -14,7 +14,7 @@ interface TrainingDay {
   onPress(): void;
 }
 
-const ProgramScreen = () => {
+const ProgramScreen = ({ navigation }: any) => {
   const [trainingDaysArray, setTrainingDaysArray] = useState<TrainingDay[]>([]);
   const addTrainingDay = () => {
     const initNewEmptyDay: TrainingDay = {
@@ -39,7 +39,8 @@ const ProgramScreen = () => {
           key={index}
           title={trainingDay.title}
           icon={trainingDay.icon}
-          onPress={() => deleteTrainingDay(trainingDay.id)}
+          onPress={() => navigation.navigate("Details", { id: trainingDay.id })}
+          onIconPress={() => deleteTrainingDay(trainingDay.id)}
         />
       ))}
 
@@ -47,7 +48,8 @@ const ProgramScreen = () => {
         title="blank"
         icon={PlusIcon}
         isBlank
-        onPress={() => addTrainingDay()}
+        onPress={() => {}}
+        onIconPress={() => addTrainingDay()}
       ></TrainingDayComponent>
     </SafeAreaView>
   );

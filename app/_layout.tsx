@@ -6,6 +6,7 @@ import React from "react";
 import HomeScreen from "./index";
 import ProgramScreen from "./screens/ProgramScreen";
 import { StatusBar } from "expo-status-bar";
+import ProgramDetailsScreen from "./screens/ProgramDetailsScreen";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -34,6 +35,7 @@ export default function RootLayout() {
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Program" component={ProgramScreen} />
+        <Stack.Screen name="Details" component={ProgramDetailsScreen} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </>
