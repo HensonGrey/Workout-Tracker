@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TrainingDayComponent from "@/components/TrainingDayComponent";
 import PlusIcon from "@/assets/images/plus.png";
 import MinusIcon from "@/assets/images/minus.png";
 import uuid from "react-native-uuid";
+import * as FileSystem from "expo-file-system";
 
 interface ExerciseDetailsProp {
   id: string;
