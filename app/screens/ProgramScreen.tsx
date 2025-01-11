@@ -6,6 +6,7 @@ import PlusIcon from "@/assets/images/plus.png";
 import SettingsIcon from "@/assets/images/settings.png";
 import uuid from "react-native-uuid";
 import {
+  AddTrainingDay,
   FileExists,
   InitEmptyFile,
   ReadFile,
@@ -35,6 +36,8 @@ const ProgramScreen = ({ navigation }: any) => {
         //Read file content
         const fileContent = await ReadFile();
         setTrainingDaysArray(fileContent.program.training_days);
+
+        console.log(fileContent);
       } catch (error) {
         console.error(`Error reading user data file: ${error}`);
       } finally {
@@ -52,7 +55,7 @@ const ProgramScreen = ({ navigation }: any) => {
       </SafeAreaView>
     );
 
-  const addTrainingDay = () => {
+  const addTrainingDay = async () => {
     const initNewEmptyDay: TrainingDay = {
       id: uuid.v4(),
       title: "",
@@ -60,7 +63,9 @@ const ProgramScreen = ({ navigation }: any) => {
       content: [],
       onPress: () => console.log("Test - New Training Day Added!"),
     };
+
     setTrainingDaysArray((prevDays) => [...prevDays, initNewEmptyDay]);
+    await AddTrainingDay(initNewEmptyDay); //saving the added program day to the file
   };
 
   return (
