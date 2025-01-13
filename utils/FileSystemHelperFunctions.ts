@@ -50,6 +50,7 @@ export const ReadFile = async () => {
   }
 };
 
+//updating the user's file with a newly created, passed as an argument training day
 export const AddTrainingDay = async (training_day: TrainingDay) => {
   try {
     const data = await ReadFile();
@@ -60,5 +61,36 @@ export const AddTrainingDay = async (training_day: TrainingDay) => {
     });
   } catch (err) {
     console.error(`There was an error adding the training day!\n${err}`);
+  }
+};
+
+//TODO -> empties the array? probably an issue with idk identical uuids
+
+//will delete by passed uuid
+export const DeleteTrainingDay = async (uuid: string) => {
+  try {
+    const data = await ReadFile();
+    data.program.training_days = data.program.training_days.filter(
+      (day: TrainingDay) => day.id !== uuid
+    );
+
+    await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
+      encoding: FileSystem.EncodingType.UTF8,
+    });
+  } catch (err) {
+    console.error(`There was an error deleting a training day!\n${err}`);
+  }
+};
+
+//saving name changes when user clicks settings in ProgramScreen
+export const SaveNameChanges = async (training_days: TrainingDay[]) => {
+  try {
+    const data = await ReadFile();
+    data.training_days = training_days;
+    await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
+      encoding: FileSystem.EncodingType.UTF8,
+    });
+  } catch (err) {
+    console.error(`There was an error updating the name changes!\n${err}`);
   }
 };

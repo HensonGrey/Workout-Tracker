@@ -11,7 +11,7 @@ import TrainingDayComponent from "@/components/TrainingDayComponent";
 import PlusIcon from "@/assets/images/plus.png";
 import MinusIcon from "@/assets/images/minus.png";
 import uuid from "react-native-uuid";
-import * as FileSystem from "expo-file-system";
+import { DeleteTrainingDay } from "@/utils/FileSystemHelperFunctions";
 
 interface ExerciseDetailsProp {
   id: string;
@@ -21,6 +21,7 @@ interface ExerciseDetailsProp {
 }
 
 export default function ProgramDetailsScreen({ route }: any) {
+  const { id } = route.params;
   const [programDetailsArray, setProgramDetailsArray] = useState<
     ExerciseDetailsProp[]
   >([]);
@@ -57,16 +58,18 @@ export default function ProgramDetailsScreen({ route }: any) {
         <ScrollView>
           {programDetailsArray.map((exercise) => (
             <TrainingDayComponent
-              key={exercise.id} // Changed to use exercise.id instead of index
+              key={exercise.id} // Changed to use exercise.id instead of index because react did a funny
+              title={exercise.title}
               setNum={exercise.setNum}
               icon={MinusIcon}
-              onIconPress={() => deleteExercise(exercise.id)}
+              onPress={() => deleteExercise(exercise.id)}
             />
           ))}
           <TrainingDayComponent
+            title={""}
             icon={PlusIcon}
             isBlank
-            onIconPress={addExercise}
+            onPress={addExercise}
           />
         </ScrollView>
       </View>
@@ -74,7 +77,7 @@ export default function ProgramDetailsScreen({ route }: any) {
       <View className="flex flex-row">
         <TouchableOpacity
           className="flex-1 h-28 bg-red-500 justify-center rounded-3xl border-2 border-gray-500"
-          onPress={() => console.log("deleting...")}
+          onPress={() => DeleteTrainingDay(id)}
         >
           <Text className="text-2xl text-center">Delete</Text>
         </TouchableOpacity>

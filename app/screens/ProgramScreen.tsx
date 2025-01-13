@@ -10,6 +10,7 @@ import {
   FileExists,
   InitEmptyFile,
   ReadFile,
+  SaveNameChanges,
 } from "@/utils/FileSystemHelperFunctions";
 
 interface TrainingDay {
@@ -31,7 +32,7 @@ const ProgramScreen = ({ navigation }: any) => {
         const fileExists = await FileExists();
 
         //if it doesnt -> create one
-        if (!fileExists) InitEmptyFile();
+        if (!fileExists) await InitEmptyFile();
 
         //Read file content
         const fileContent = await ReadFile();
@@ -73,18 +74,23 @@ const ProgramScreen = ({ navigation }: any) => {
       {trainingDaysArray.map((trainingDay, index) => (
         <TrainingDayComponent
           key={index}
+          title={trainingDay.title}
           icon={trainingDay.icon}
-          onPress={() => console.log("editing ...")}
-          onIconPress={() =>
-            navigation.navigate("Details", { id: trainingDay.id })
-          }
+          onPress={async () => {
+            // for (let i = 0; i < trainingDaysArray.length; i++) {
+            //   console.log(trainingDaysArray[i]);
+            // }
+            // await SaveNameChanges(trainingDaysArray);
+            navigation.navigate("Details", { id: trainingDay.id });
+          }}
         />
       ))}
 
       <TrainingDayComponent
+        title=""
         icon={PlusIcon}
         isBlank
-        onIconPress={() => addTrainingDay()}
+        onPress={() => addTrainingDay()}
       />
     </SafeAreaView>
   );

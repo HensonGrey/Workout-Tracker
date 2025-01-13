@@ -9,25 +9,24 @@ import {
 } from "react-native";
 
 interface TrainingDayProps {
+  title: any;
   setNum?: number;
   icon: ImageSourcePropType;
   isBlank?: boolean;
-  onPress?(): void;
-  onIconPress(): void;
+  onPress(): void;
 }
 
 const TrainingDayComponent: React.FC<TrainingDayProps> = ({
+  title,
   setNum,
   icon,
   isBlank,
   onPress,
-  onIconPress,
 }) => {
-  const [text, setText] = useState<any>("");
+  const [text, setText] = useState<any>(title);
 
   return (
     <TouchableOpacity
-      onPress={onPress}
       className={`p-3 flex flex-row justify-between border-2 border-gray-500 rounded-lg w-full ${
         isBlank ? "bg-gray-600" : "bg-gray-200"
       }`}
@@ -50,7 +49,7 @@ const TrainingDayComponent: React.FC<TrainingDayProps> = ({
           }`}
         ></TextInput>
       </View>
-      <TouchableOpacity onPress={onIconPress}>
+      <TouchableOpacity onPress={onPress}>
         <View
           className={`border-2 rounded-full p-2 ${
             isBlank ? "bg-gray-200" : ""
