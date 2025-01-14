@@ -7,6 +7,8 @@ import HomeScreen from "./index";
 import ProgramScreen from "./screens/ProgramScreen";
 import { StatusBar } from "expo-status-bar";
 import ProgramDetailsScreen from "./screens/ProgramDetailsScreen";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -25,7 +27,7 @@ export default function RootLayout() {
   if (!loaded) return null;
 
   return (
-    <>
+    <Provider store={store}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -38,6 +40,6 @@ export default function RootLayout() {
         <Stack.Screen name="Details" component={ProgramDetailsScreen} />
       </Stack.Navigator>
       <StatusBar style="auto" />
-    </>
+    </Provider>
   );
 }

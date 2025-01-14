@@ -1,14 +1,6 @@
 import filePath from "@/constants/FilePath";
+import { TrainingDay } from "@/store/types";
 import * as FileSystem from "expo-file-system";
-import { ImageSourcePropType } from "react-native";
-
-interface TrainingDay {
-  id: string;
-  title: string;
-  icon: ImageSourcePropType;
-  content: string[];
-  onPress(): void;
-}
 
 //checking if file exists
 export const FileExists = async () => {
@@ -86,7 +78,8 @@ export const DeleteTrainingDay = async (uuid: string) => {
 export const SaveNameChanges = async (training_days: TrainingDay[]) => {
   try {
     const data = await ReadFile();
-    data.training_days = training_days;
+    data.program.training_days = training_days;
+
     await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
       encoding: FileSystem.EncodingType.UTF8,
     });

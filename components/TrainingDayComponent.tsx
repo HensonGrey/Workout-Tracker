@@ -1,29 +1,31 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  ImageSourcePropType,
-} from "react-native";
+import { RootState } from "@/store/store";
+import { updateTrainingDayTitle } from "@/store/trainingSlice";
+import { TrainingDayUI } from "@/store/types";
+import { SaveNameChanges } from "@/utils/FileSystemHelperFunctions";
+import React, { useEffect, useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
-interface TrainingDayProps {
-  title: any;
-  setNum?: number;
-  icon: ImageSourcePropType;
-  isBlank?: boolean;
-  onPress(): void;
-}
-
-const TrainingDayComponent: React.FC<TrainingDayProps> = ({
-  title,
+const TrainingDayComponent: React.FC<TrainingDayUI> = ({
+  id,
+  title: initialTitle,
   setNum,
   icon,
   isBlank,
   onPress,
 }) => {
-  const [text, setText] = useState<any>(title);
+  const dispatch = useDispatch();
+  const trainingDaysArray = useSelector(
+    (state: RootState) => state.training.trainingDays
+  );
+  const [localTitle, setLocalTitle] = useState(initialTitle);
+  const handleTextChange = (text: any) => {
+    if (!isBlank) dispatch(updateTrainingDayTitle({ id, newTitle: text }));
+  };
+
+  useEffect(() => {
+    setLocalTitle(initialTitle);
+  }, [initialTitle]);
 
   return (
     <TouchableOpacity
@@ -40,8 +42,9 @@ const TrainingDayComponent: React.FC<TrainingDayProps> = ({
           ""
         )}
         <TextInput
-          value={text}
-          onChangeText={(newText) => setText(newText)}
+          value={localTitle}
+          onChangeText={(text) => handleTextChange(text)}
+          onEndEditing={async () => await SaveNameChanges(trainingDaysArray)}
           placeholder={`${isBlank ? "Blank" : "Click to edit"}`}
           editable={!isBlank}
           className={`text-2xl pl-4 align-middle w-[82%] ${
