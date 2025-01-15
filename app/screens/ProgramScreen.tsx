@@ -61,6 +61,7 @@ const ProgramScreen = ({ navigation }: any) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", async () => {
       try {
+        dispatch(setTrainingDays([...trainingDaysArray]));
         await SaveNameChanges(trainingDaysArray);
       } catch (error) {
         console.error("Error saving changes:", error);

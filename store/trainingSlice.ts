@@ -26,12 +26,14 @@ const trainingSlice = createSlice({
     ) => {
       const { id, newTitle, exerciseId } = action.payload;
       const day = state.trainingDays.find((day) => day.id == id);
-      if (exerciseId !== null && day) {
+      if (exerciseId !== undefined && day) {
         const editedExerciseTitle = day.content.find(
           (exercise) => exercise.id == exerciseId
         );
         if (editedExerciseTitle) editedExerciseTitle.title = newTitle;
-      } else if (day) day.title = newTitle;
+      } else if (day) {
+        day.title = newTitle;
+      }
     },
     updateTrainingDayContent: () => {},
     deleteTrainingDay: (
