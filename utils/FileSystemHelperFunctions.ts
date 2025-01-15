@@ -56,9 +56,7 @@ export const AddTrainingDay = async (training_day: TrainingDay) => {
   }
 };
 
-//TODO -> empties the array? probably an issue with idk identical uuids
-
-//will delete by passed uuid
+//deletes by passed trainingDay uuid
 export const DeleteTrainingDay = async (uuid: string) => {
   try {
     const data = await ReadFile();

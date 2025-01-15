@@ -1,5 +1,5 @@
 import { RootState } from "@/store/store";
-import { updateTrainingDayTitle } from "@/store/trainingSlice";
+import { updateTrainingDayTextInput } from "@/store/trainingSlice";
 import { TrainingDayUI } from "@/store/types";
 import { SaveNameChanges } from "@/utils/FileSystemHelperFunctions";
 import React, { useEffect, useState } from "react";
@@ -12,6 +12,7 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
   setNum,
   icon,
   isBlank,
+  parentId,
   onPress,
 }) => {
   const dispatch = useDispatch();
@@ -19,8 +20,25 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
     (state: RootState) => state.training.trainingDays
   );
   const [localTitle, setLocalTitle] = useState(initialTitle);
-  const handleTextChange = (text: any) => {
-    if (!isBlank) dispatch(updateTrainingDayTitle({ id, newTitle: text }));
+
+  const handleTextChange = (text: string) => {
+    setLocalTitle(text);
+
+    if (!isBlank) {
+      if (parentId) {
+        // This is an exercise being edited
+        dispatch(
+          updateTrainingDayTextInput({
+            id: parentId,
+            newTitle: text,
+            exerciseId: id,
+          })
+        );
+      } else {
+        // This is a training day being edited
+        dispatch(updateTrainingDayTextInput({ id, newTitle: text }));
+      }
+    }
   };
 
   useEffect(() => {
@@ -38,19 +56,17 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
           <Text className="text-center align-middle text-2xl">
             {setNum !== undefined ? setNum + "." : ""}
           </Text>
-        ) : (
-          ""
-        )}
+        ) : null}
         <TextInput
           value={localTitle}
-          onChangeText={(text) => handleTextChange(text)}
+          onChangeText={handleTextChange}
           onEndEditing={async () => await SaveNameChanges(trainingDaysArray)}
           placeholder={`${isBlank ? "Blank" : "Click to edit"}`}
           editable={!isBlank}
           className={`text-2xl pl-4 align-middle w-[82%] ${
             isBlank ? "text-white" : ""
           }`}
-        ></TextInput>
+        />
       </View>
       <TouchableOpacity onPress={onPress}>
         <View
@@ -58,7 +74,7 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
             isBlank ? "bg-gray-200" : ""
           }`}
         >
-          <Image source={icon} className="h-8 w-8"></Image>
+          <Image source={icon} className="h-8 w-8" />
         </View>
       </TouchableOpacity>
     </TouchableOpacity>

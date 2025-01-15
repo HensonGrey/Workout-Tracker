@@ -102,7 +102,7 @@ const ProgramScreen = ({ navigation }: any) => {
           title={trainingDay.title}
           icon={SettingsIcon}
           onPress={() => {
-            navigation.navigate("Details", { id: trainingDay.id });
+            navigation.navigate("Details", { parent_id: trainingDay.id });
           }}
         />
       ))}

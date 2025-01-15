@@ -25,6 +25,7 @@ export interface TrainingDayUI {
   setNum?: number; //to ennumerate them in the UI
   icon: ImageSourcePropType;
   isBlank?: boolean;
+  parentId?: string;
   onPress(): void;
 }
 
