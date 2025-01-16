@@ -17,13 +17,17 @@ export interface ExerciseDetails {
   setNum: number;
 }
 
+export interface TrainingDayIndex {
+  index: number;
+}
+
 // **********  for the UI, mapping the redux object and adding some extra redux-unserializable types
 export interface TrainingDayUI {
   id: string;
   title: string;
   content?: ExerciseDetailsUI[];
   setNum?: number; //to ennumerate them in the UI
-  icon: ImageSourcePropType;
+  icon?: ImageSourcePropType; //dont need icons in HomeScreen
   isBlank?: boolean;
   parentId?: string;
   onPress(): void;

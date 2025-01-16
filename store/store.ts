@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import trainingReducer from "./trainingSlice";
+import progressReducer from "./progressSlice";
 
 export const store = configureStore({
   reducer: {
     training: trainingReducer,
+    progressReducer,
   },
 });
 

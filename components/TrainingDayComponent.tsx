@@ -65,12 +65,12 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
           editable={!isBlank}
           className={`text-2xl pl-4 align-middle w-[82%] ${
             isBlank ? "text-white" : ""
-          }`}
+          } ${icon ? "" : "text-center ml-10"}`}
         />
       </View>
       <TouchableOpacity onPress={onPress}>
         <View
-          className={`border-2 rounded-full p-2 ${
+          className={`${icon ? "border-2 rounded-full p-2" : ""} ${
             isBlank ? "bg-gray-200" : ""
           }`}
         >
