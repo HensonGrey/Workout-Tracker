@@ -52,8 +52,9 @@ export default function HomeScreen({ navigation }: any) {
         </Text>
         <ScrollView>
           {exercisesToDisplay ? (
-            exercisesToDisplay.map((exercise) => (
+            exercisesToDisplay.map((exercise, index) => (
               <TrainingDayComponent
+                key={index}
                 id={exercise.id}
                 title={exercise.title}
                 onPress={() => {}}

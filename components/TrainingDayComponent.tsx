@@ -62,7 +62,7 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
           onChangeText={handleTextChange}
           onEndEditing={async () => await SaveNameChanges(trainingDaysArray)}
           placeholder={`${isBlank ? "Blank" : "Click to edit"}`}
-          editable={!isBlank}
+          editable={!isBlank && icon !== undefined}
           className={`text-2xl pl-4 align-middle w-[82%] ${
             isBlank ? "text-white" : ""
           } ${icon ? "" : "text-center ml-10"}`}
