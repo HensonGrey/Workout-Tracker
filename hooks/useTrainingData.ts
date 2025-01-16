@@ -4,7 +4,6 @@ import {
   FileExists,
   InitEmptyFile,
   ReadFile,
-  SaveNameChanges,
 } from "@/utils/FileSystemHelperFunctions";
 import { setTrainingDays } from "@/store/trainingSlice";
 import { TrainingDay } from "@/store/types";

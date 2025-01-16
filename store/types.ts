@@ -17,8 +17,10 @@ export interface ExerciseDetails {
   setNum: number;
 }
 
-export interface TrainingDayIndex {
+export interface NextTrainingDay {
   index: number;
+  title: string;
+  exercises: ExerciseDetails[];
 }
 
 // **********  for the UI, mapping the redux object and adding some extra redux-unserializable types

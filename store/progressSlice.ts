@@ -1,8 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TrainingDayIndex } from "./types";
+import { ExerciseDetails, NextTrainingDay } from "./types";
 
-const initialState: TrainingDayIndex = {
+const initialState: NextTrainingDay = {
   index: 0,
+  title: "",
+  exercises: [],
 };
 
 const progressSlice = createSlice({
@@ -10,13 +12,23 @@ const progressSlice = createSlice({
   initialState,
   reducers: {
     nextTrainingDay: (state, action: PayloadAction<number>) => {
-      state.index = (state.index + 1) % action.payload;
+      // If we're at the last index and a day was deleted,
+      // we want to go back to the first day
+      if (state.index >= action.payload) {
+        state.index = 0;
+      } else {
+        state.index = (state.index + 1) % action.payload;
+      }
     },
-    setTrainingDay: (state, action: PayloadAction<number>) => {
-      state.index = action.payload;
+    setTrainingTitle: (state, action: PayloadAction<string>) => {
+      state.title = action.payload;
+    },
+    setExercises: (state, action: PayloadAction<ExerciseDetails[]>) => {
+      state.exercises = action.payload;
     },
   },
 });
 
-export const { nextTrainingDay, setTrainingDay } = progressSlice.actions;
+export const { nextTrainingDay, setTrainingTitle, setExercises } =
+  progressSlice.actions;
 export default progressSlice.reducer;
