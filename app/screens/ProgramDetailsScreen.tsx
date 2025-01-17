@@ -1,9 +1,11 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useProgramDetails from "@/hooks/useProgramDetails";
-import ExerciseList from "@/components/ExerciseList";
 import { ErrorScreen } from "@/components/ErrorScreen";
+import TrainingDayComponent from "@/components/TrainingDayComponent";
+import PlusIcon from "@/assets/images/plus.png";
+import MinusIcon from "@/assets/images/minus.png";
 
 export default function ProgramDetailsScreen({ route, navigation }: any) {
   const { parent_id } = route.params;
@@ -21,12 +23,26 @@ export default function ProgramDetailsScreen({ route, navigation }: any) {
   return (
     <SafeAreaView className="h-full bg-zinc-300 flex flex-col justify-between p-2">
       <View className="h-[80%] border-2 rounded-2xl p-2">
-        <ExerciseList
-          exercises={programDetailsArray}
-          parentId={parent_id}
-          onDeleteExercise={handleDeleteExercise}
-          onAddExercise={handleAddExercise}
-        />
+        <ScrollView>
+          {programDetailsArray.map((exercise, index) => (
+            <TrainingDayComponent
+              key={index}
+              id={exercise.id}
+              parentId={parent_id}
+              title={exercise.title}
+              setNum={exercise.setNum}
+              icon={MinusIcon}
+              onPress={() => handleDeleteExercise(exercise.id)}
+            />
+          ))}
+          <TrainingDayComponent
+            id=""
+            title=""
+            icon={PlusIcon}
+            isBlank
+            onPress={() => handleAddExercise()}
+          />
+        </ScrollView>
       </View>
 
       <View className="flex flex-row">

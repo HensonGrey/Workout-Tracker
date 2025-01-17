@@ -58,7 +58,7 @@ const ProgramScreen = ({ navigation }: any) => {
   }
 
   return (
-    <SafeAreaView className="h-full bg-zinc-300">
+    <SafeAreaView className="h-full bg-zinc-300 p-2">
       {trainingDaysArray.map((trainingDay, index) => (
         <TrainingDayComponent
           key={index}

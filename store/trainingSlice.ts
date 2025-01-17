@@ -89,6 +89,12 @@ const trainingSlice = createSlice({
         setNum: index + 1,
       }));
     },
+    addExerciseSet: (
+      state,
+      action: PayloadAction<{ training_day_id: string; exercise_index: number }>
+    ) => {
+      //TODO
+    },
   },
 });
 

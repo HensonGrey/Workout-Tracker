@@ -6,9 +6,10 @@ import { useDispatch } from "react-redux";
 import { decrementCounter } from "@/store/counterSlice";
 
 const CustomStackNavigationHeader = ({ navigation, route }: any) => {
-  const { title, exercises, exercise_index } = route.params;
   const dispatch = useDispatch();
-  console.log(exercises);
+  const { title, exercises, exercise_index } = route.params;
+
+  // console.log(exercises);
   return (
     <SafeAreaView className="flex flex-row justify-between p-4 bg-slate-500">
       {exercise_index >= 0 ? (
