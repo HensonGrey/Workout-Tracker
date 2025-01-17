@@ -3,6 +3,7 @@ import { ExerciseDetails, NextTrainingDay } from "./types";
 
 const initialState: NextTrainingDay = {
   index: 0,
+  id: "",
   title: "",
   exercises: [],
 };
@@ -20,6 +21,9 @@ const progressSlice = createSlice({
         state.index = (state.index + 1) % action.payload;
       }
     },
+    setTrainingDayId: (state, action: PayloadAction<string>) => {
+      state.id = action.payload;
+    },
     setTrainingTitle: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
@@ -29,6 +33,10 @@ const progressSlice = createSlice({
   },
 });
 
-export const { nextTrainingDay, setTrainingTitle, setExercises } =
-  progressSlice.actions;
+export const {
+  nextTrainingDay,
+  setTrainingDayId,
+  setTrainingTitle,
+  setExercises,
+} = progressSlice.actions;
 export default progressSlice.reducer;

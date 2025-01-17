@@ -8,14 +8,16 @@ import { RootState } from "@/store/store";
 import { useTrainingData } from "@/hooks/useTrainingData";
 import TrainingDayComponent from "@/components/TrainingDayComponent";
 import {
-  nextTrainingDay,
   setExercises,
+  setTrainingDayId,
   setTrainingTitle,
 } from "@/store/progressSlice";
+import { ErrorScreen } from "@/components/ErrorScreen";
+import { ExerciseDetails } from "@/store/types";
 
 export default function HomeScreen({ navigation }: any) {
   const dispatch = useDispatch();
-  const { index, title, exercises } = useSelector(
+  const { index, id, title, exercises } = useSelector(
     (state: RootState) => state.progressReducer
   );
   const trainingDay = useSelector(
@@ -31,10 +33,12 @@ export default function HomeScreen({ navigation }: any) {
       const currentDay = trainingDay[currentIndex];
 
       // Always update both title and exercises to keep in sync
+      dispatch(setTrainingDayId(currentDay.id));
       dispatch(setTrainingTitle(currentDay.title));
       dispatch(setExercises(currentDay.content));
     } else if (trainingDay.length === 0) {
       // If no training days left, clear the progress data
+      dispatch(setTrainingDayId(""));
       dispatch(setTrainingTitle(""));
       dispatch(setExercises([]));
     }
@@ -56,7 +60,7 @@ export default function HomeScreen({ navigation }: any) {
               />
             ))
           ) : (
-            <SafeAreaView></SafeAreaView>
+            <ErrorScreen />
           )}
         </ScrollView>
       </View>
@@ -69,7 +73,22 @@ export default function HomeScreen({ navigation }: any) {
           <Text className="text-center text-2xl color-white">program</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="flex-[1] justify-center bg-slate-600 rounded-t-2xl">
+        <TouchableOpacity
+          className="flex-[1] justify-center bg-slate-600 rounded-t-2xl"
+          onPress={() => {
+            // const firstExercise: ExerciseDetails = exercises[0];
+            if (!exercises?.length || !title?.trim()) {
+              alert("Cannot start a not defined workout");
+              return;
+            }
+            navigation.navigate("Workout", {
+              id,
+              title,
+              exercises,
+              exercise_index: 0,
+            });
+          }}
+        >
           <Text className="text-center text-2xl color-white">start</Text>
         </TouchableOpacity>
 

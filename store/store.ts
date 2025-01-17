@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import trainingReducer from "./trainingSlice";
 import progressReducer from "./progressSlice";
+import counterSlice from "./counterSlice";
 
 export const store = configureStore({
   reducer: {
     training: trainingReducer,
     progressReducer,
+    counterSlice,
   },
 });
 

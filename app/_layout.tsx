@@ -9,6 +9,8 @@ import { StatusBar } from "expo-status-bar";
 import ProgramDetailsScreen from "./screens/ProgramDetailsScreen";
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
+import WorkoutScreen from "./screens/WorkoutScreen";
+import CustomStackNavigationHeader from "@/components/CustomStackNavigationHeader";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -38,6 +40,18 @@ export default function RootLayout() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Program" component={ProgramScreen} />
         <Stack.Screen name="Details" component={ProgramDetailsScreen} />
+        <Stack.Screen
+          name="Workout"
+          component={WorkoutScreen}
+          options={({ navigation, route }) => ({
+            header: () => (
+              <CustomStackNavigationHeader
+                navigation={navigation}
+                route={route}
+              />
+            ),
+          })}
+        />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </Provider>

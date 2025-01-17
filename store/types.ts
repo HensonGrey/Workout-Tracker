@@ -18,7 +18,8 @@ export interface ExerciseDetails {
 }
 
 export interface NextTrainingDay {
-  index: number;
+  index: number; //index of training day inside the trainingDaysArray
+  id: string;
   title: string;
   exercises: ExerciseDetails[];
 }

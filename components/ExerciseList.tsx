@@ -7,7 +7,7 @@ import MinusIcon from "@/assets/images/minus.png";
 
 interface ExerciseListProps {
   exercises: ExerciseDetails[];
-  parentId: string;
+  parentId?: string;
   onDeleteExercise: (id: string) => void;
   onAddExercise: () => void;
 }
