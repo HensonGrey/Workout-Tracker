@@ -91,9 +91,80 @@ const trainingSlice = createSlice({
     },
     addExerciseSet: (
       state,
-      action: PayloadAction<{ training_day_id: string; exercise_index: number }>
+      action: PayloadAction<{
+        training_day_id: string;
+        exercise_index: number;
+        newSet: ExerciseDetails;
+      }>
     ) => {
-      //TODO
+      const { training_day_id, exercise_index, newSet } = action.payload;
+      const currentDay = state.trainingDays.find(
+        (day) => day.id === training_day_id
+      );
+
+      if (!currentDay) {
+        console.error("Training day not found:", training_day_id);
+        return;
+      }
+
+      const currentExercise = currentDay.content[exercise_index];
+      if (!currentExercise) {
+        console.error("Exercise not found at index:", exercise_index);
+        return;
+      }
+
+      // Ensure sets array exists
+      if (!currentExercise.sets) {
+        currentExercise.sets = [];
+      }
+
+      // Add new set
+      currentExercise.sets = [
+        ...(currentExercise.sets || []),
+        {
+          ...newSet,
+          setNum: (currentExercise.sets?.length || 0) + 1,
+        },
+      ];
+    },
+    deleteExerciseSet: (
+      state,
+      action: PayloadAction<{
+        currrent_day_id: string;
+        exercise_to_delete_id: string;
+        set_to_delete_id: string;
+      }>
+    ) => {
+      const { currrent_day_id, exercise_to_delete_id, set_to_delete_id } =
+        action.payload;
+      const currentDay = state.trainingDays.find(
+        (day) => day.id == currrent_day_id
+      );
+
+      if (currentDay === undefined)
+        return console.error(
+          `Current training day is undefined. Function is in trainingSlice -> deleteExercise`
+        );
+
+      const currentExercise = currentDay.content.find(
+        (ex) => ex.id === exercise_to_delete_id
+      );
+      if (currentExercise === undefined)
+        return console.error(
+          `Current exercise is undefined. Function is in trainingSlice -> deleteExercise`
+        );
+
+      if (currentExercise.sets === undefined)
+        return console.error("I will kill myself");
+
+      currentExercise.sets = currentExercise.sets.filter(
+        (exercise) => exercise.id !== set_to_delete_id
+      );
+
+      currentExercise.sets = currentExercise.sets.map((set, index) => ({
+        ...set,
+        setNum: index + 1,
+      }));
     },
   },
 });
@@ -106,5 +177,7 @@ export const {
   deleteTrainingDay,
   addEmptyExercise,
   deleteExercise,
+  addExerciseSet,
+  deleteExerciseSet,
 } = trainingSlice.actions;
 export default trainingSlice.reducer;

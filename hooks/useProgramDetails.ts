@@ -23,6 +23,7 @@ const useProgramDetails = (parentId: string, navigation: any) => {
       id: uuid.v4().toString(),
       title: "",
       setNum: programDetailsArray.length + 1,
+      sets: [],
     };
 
     dispatch(addEmptyExercise({ id: parentId, emptyExercise }));

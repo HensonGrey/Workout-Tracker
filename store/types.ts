@@ -16,7 +16,7 @@ export interface ExerciseDetails {
   id: string;
   title: string;
   setNum: number;
-  history?: string[]; //Upper A -> Bench 3x10 -> history -> {history: [80x5, 70x7], date: 17.07.2018}
+  sets?: ExerciseDetails[]; //Upper A -> Bench 3x10 -> history -> {history: [80x5, 70x7], date: 17.07.2018}
 }
 
 export interface NextTrainingDay {
