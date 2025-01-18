@@ -63,6 +63,7 @@ const WorkoutScreen = ({ route }: any) => {
             key={set.id}
             id={set.id}
             title={``}
+            setNum={set.setNum}
             icon={MinusIcon}
             onPress={() => removeSet(set.id)}
           />
