@@ -47,7 +47,7 @@ const WorkoutScreen = ({ route }: any) => {
     dispatch(
       deleteExerciseSet({
         currrent_day_id: id,
-        exercise_to_delete_id: currentExercise.id,
+        exercise_index,
         set_to_delete_id: set_id,
       })
     );
