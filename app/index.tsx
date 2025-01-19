@@ -85,7 +85,7 @@ export default function HomeScreen({ navigation }: any) {
               id,
               title,
               exercises,
-              exercise_index: 0,
+              // exercise_index: 0,
             });
           }}
         >
