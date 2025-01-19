@@ -35,6 +35,7 @@ export interface TrainingDayUI {
   icon?: ImageSourcePropType; //dont need icons in HomeScreen
   isBlank?: boolean;
   parentId?: string;
+  setId?: string; //this is getting ridiculous
   onPress(): void;
 }
 

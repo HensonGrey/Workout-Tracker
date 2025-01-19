@@ -52,6 +52,7 @@ export const useWorkout = (route: any) => {
   const skipWorkout = () => {};
 
   return {
+    id,
     currentExercise,
     exercises,
     exercise_index,

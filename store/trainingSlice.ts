@@ -26,18 +26,28 @@ const trainingSlice = createSlice({
         id: string;
         newTitle: string;
         exerciseId?: string;
+        setId?: string;
       }>
     ) => {
-      const { id, newTitle, exerciseId } = action.payload;
+      const { id, newTitle, exerciseId, setId } = action.payload;
       const day = getCurrentDay(state.trainingDays, id);
       if (!day) return;
-
       if (exerciseId) {
         const exercise = day.content.find(
-          (exercise) => exercise.id == exerciseId
+          (exercise) => exercise.id === exerciseId
         );
-        if (exercise) exercise.title = newTitle;
+        if (exercise) {
+          if (setId) {
+            // Update set title
+            const set = exercise.sets?.find((ex) => ex.id === setId);
+            if (set) set.title = newTitle;
+          } else {
+            // Update exercise title
+            exercise.title = newTitle;
+          }
+        }
       } else {
+        // Update training day title
         day.title = newTitle;
       }
     },
@@ -77,6 +87,8 @@ const trainingSlice = createSlice({
         )
         .map((exercise, index) => ({ ...exercise, setNum: index + 1 }));
     },
+
+    //exercise sets logic
     addExerciseSet: (
       state,
       action: PayloadAction<{

@@ -10,6 +10,7 @@ import { useWorkout } from "@/hooks/useWorkoutScreen";
 
 const WorkoutScreen = ({ route }: any) => {
   const {
+    id,
     currentExercise,
     exercises,
     exercise_index,
@@ -27,8 +28,10 @@ const WorkoutScreen = ({ route }: any) => {
           {(currentExercise.sets || []).map((set: ExerciseDetails) => (
             <TrainingDayComponent
               key={set.id}
-              id={set.id}
-              title={``}
+              id={currentExercise.id}
+              setId={set.id}
+              title={set.title || ""}
+              parentId={id}
               setNum={set.setNum}
               icon={MinusIcon}
               onPress={() => removeSet(set.id)}

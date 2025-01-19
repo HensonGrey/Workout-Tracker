@@ -13,6 +13,7 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
   icon,
   isBlank,
   parentId,
+  setId,
   onPress,
 }) => {
   const dispatch = useDispatch();
@@ -23,22 +24,35 @@ const TrainingDayComponent: React.FC<TrainingDayUI> = ({
 
   const handleTextChange = (text: string) => {
     setLocalTitle(text);
+    if (isBlank) return;
 
-    if (!isBlank) {
-      if (parentId) {
-        // This is an exercise being edited
-        dispatch(
-          updateTrainingDayTextInput({
-            id: parentId,
-            newTitle: text,
-            exerciseId: id,
-          })
-        );
-      } else {
-        // This is a training day being edited
-        dispatch(updateTrainingDayTextInput({ id, newTitle: text }));
-      }
+    // Case 1: Updating a set (requires both parentId and setId)
+    if (parentId && setId) {
+      dispatch(
+        updateTrainingDayTextInput({
+          id: parentId,
+          newTitle: text,
+          exerciseId: id,
+          setId: setId,
+        })
+      );
     }
+    // Case 2: Updating an exercise (requires only parentId)
+    else if (parentId) {
+      dispatch(
+        updateTrainingDayTextInput({
+          id: parentId,
+          newTitle: text,
+          exerciseId: id,
+        })
+      );
+    }
+    // Case 3: Updating a training day (requires only id)
+    else {
+      dispatch(updateTrainingDayTextInput({ id, newTitle: text }));
+    }
+    // Save changes to persistent storage after the update
+    SaveNameChanges(trainingDaysArray);
   };
 
   useEffect(() => {
