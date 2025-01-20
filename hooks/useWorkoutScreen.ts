@@ -9,12 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-native-uuid";
 import {
   addExerciseSet,
+  clearLastWorkoutSets,
   deleteExerciseSet,
   setExerciseSets,
   setLastWorkoutSets,
 } from "@/store/trainingSlice";
 import { nextTrainingDay } from "@/store/progressSlice";
 import { SaveNameChanges } from "@/utils/FileSystemHelperFunctions";
+import { resetCounter } from "@/store/counterSlice";
 
 interface WorkoutRouteProps {
   id: string;
@@ -92,6 +94,13 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
         historyObject.exercises_performed.push(exerciseInformation);
       });
 
+      exercises.forEach((lastW, index) => {
+        if (lastW.lastWorkoutData)
+          dispatch(
+            clearLastWorkoutSets({ training_day_id: id, exercise_index: index })
+          );
+      });
+
       exercises.forEach((_, index) => {
         dispatch(
           setLastWorkoutSets({
@@ -116,6 +125,8 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
         (current_training_day_index + 1) % all_training_days.length;
       // Update training day index in redux
       dispatch(nextTrainingDay(all_training_days.length));
+
+      dispatch(resetCounter());
 
       // Save changes to file system
       await SaveNameChanges(all_training_days, nextIndex);

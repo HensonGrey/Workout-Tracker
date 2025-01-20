@@ -161,6 +161,23 @@ const trainingSlice = createSlice({
 
       for (const set of exercise.sets) exercise.lastWorkoutData.push(set.title);
     },
+    clearLastWorkoutSets: (
+      state,
+      action: PayloadAction<{ training_day_id: string; exercise_index: number }>
+    ) => {
+      const { training_day_id, exercise_index } = action.payload;
+      const exercise = getCurrentExercise(
+        state.trainingDays,
+        training_day_id,
+        exercise_index
+      );
+
+      if (!exercise) return;
+      if (!exercise.sets) return;
+      if (!exercise.lastWorkoutData) return;
+
+      exercise.lastWorkoutData = [];
+    },
   },
 });
 
@@ -175,5 +192,6 @@ export const {
   deleteExerciseSet,
   setExerciseSets,
   setLastWorkoutSets,
+  clearLastWorkoutSets,
 } = trainingSlice.actions;
 export default trainingSlice.reducer;

@@ -48,7 +48,9 @@ const WorkoutScreen = ({ navigation, route }: any) => {
         </ScrollView>
 
         <View className="h-2/5 mt-2">
-          <Text className="text-lg font-semibold">Previous Workout</Text>
+          <Text className="text-lg font-semibold">
+            Previous Workout - {currentExercise.title}
+          </Text>
           <ScrollView className="flex-1 bg-zinc-200 rounded-lg p-2 mb-4">
             {currentExercise.lastWorkoutData
               ? currentExercise.lastWorkoutData.map((prevWorkoutSet, index) => (
