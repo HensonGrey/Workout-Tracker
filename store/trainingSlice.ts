@@ -129,6 +129,38 @@ const trainingSlice = createSlice({
         .filter((set) => set.id !== action.payload.set_to_delete_id)
         .map((set, index) => ({ ...set, setNum: index + 1 }));
     },
+    setExerciseSets: (
+      state,
+      action: PayloadAction<{ training_day_id: string; exercise_index: number }>
+    ) => {
+      const { training_day_id, exercise_index } = action.payload;
+      const exercise = getCurrentExercise(
+        state.trainingDays,
+        training_day_id,
+        exercise_index
+      );
+
+      if (!exercise) return;
+      if (!exercise.sets) return;
+      exercise.sets = [];
+    },
+    setLastWorkoutSets: (
+      state,
+      action: PayloadAction<{ training_day_id: string; exercise_index: number }>
+    ) => {
+      const { training_day_id, exercise_index } = action.payload;
+      const exercise = getCurrentExercise(
+        state.trainingDays,
+        training_day_id,
+        exercise_index
+      );
+
+      if (!exercise) return;
+      if (!exercise.sets) return;
+      if (!exercise.lastWorkoutData) exercise.lastWorkoutData = [];
+
+      for (const set of exercise.sets) exercise.lastWorkoutData.push(set.title);
+    },
   },
 });
 
@@ -141,5 +173,7 @@ export const {
   deleteExercise,
   addExerciseSet,
   deleteExerciseSet,
+  setExerciseSets,
+  setLastWorkoutSets,
 } = trainingSlice.actions;
 export default trainingSlice.reducer;

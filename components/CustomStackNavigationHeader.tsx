@@ -10,7 +10,7 @@ const CustomStackNavigationHeader = ({ navigation, route }: any) => {
   const dispatch = useDispatch();
   const { id, title, exercises } = route.params;
   const exercise_index = useSelector(
-    (state: RootState) => state.counterSlice.exercise_index
+    (state: RootState) => state.counter.exercise_index
   );
 
   return (

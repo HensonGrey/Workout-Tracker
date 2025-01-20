@@ -7,6 +7,7 @@ import {
 } from "@/utils/FileSystemHelperFunctions";
 import { setTrainingDays } from "@/store/trainingSlice";
 import { TrainingDay } from "@/store/types";
+import { setIndex } from "@/store/progressSlice";
 
 interface UseTrainingDataProps {
   onNavigateAway?: (trainingDays: TrainingDay[]) => Promise<void>;
@@ -34,7 +35,13 @@ export const useTrainingData = ({
         const fileContent = await ReadFile();
 
         if (isMounted) {
+          const validIndex =
+            fileContent.program.current_day_index <
+            fileContent.program.training_days.length
+              ? fileContent.program.current_day_index
+              : 0;
           dispatch(setTrainingDays(fileContent.program.training_days));
+          dispatch(setIndex(validIndex));
           setIsLoading(false);
         }
       } catch (error) {

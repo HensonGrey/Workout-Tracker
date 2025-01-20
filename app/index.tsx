@@ -13,12 +13,11 @@ import {
   setTrainingTitle,
 } from "@/store/progressSlice";
 import { ErrorScreen } from "@/components/ErrorScreen";
-import { ExerciseDetails } from "@/store/types";
 
 export default function HomeScreen({ navigation }: any) {
   const dispatch = useDispatch();
   const { index, id, title, exercises } = useSelector(
-    (state: RootState) => state.progressReducer
+    (state: RootState) => state.progress
   );
   const trainingDay = useSelector(
     (state: RootState) => state.training.trainingDays
@@ -29,8 +28,7 @@ export default function HomeScreen({ navigation }: any) {
   useEffect(() => {
     if (!isLoading && trainingDay.length > 0) {
       // Get current training day data (safely)
-      const currentIndex = index >= trainingDay.length ? 0 : index;
-      const currentDay = trainingDay[currentIndex];
+      const currentDay = trainingDay[index];
 
       // Always update both title and exercises to keep in sync
       dispatch(setTrainingDayId(currentDay.id));

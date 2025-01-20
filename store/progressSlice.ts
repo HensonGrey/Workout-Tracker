@@ -9,7 +9,7 @@ const initialState: NextTrainingDay = {
 };
 
 const progressSlice = createSlice({
-  name: "counter",
+  name: "progress",
   initialState,
   reducers: {
     nextTrainingDay: (state, action: PayloadAction<number>) => {
@@ -20,6 +20,9 @@ const progressSlice = createSlice({
       } else {
         state.index = (state.index + 1) % action.payload;
       }
+    },
+    setIndex: (state, action: PayloadAction<number>) => {
+      state.index = action.payload;
     },
     setTrainingDayId: (state, action: PayloadAction<string>) => {
       state.id = action.payload;
@@ -35,6 +38,7 @@ const progressSlice = createSlice({
 
 export const {
   nextTrainingDay,
+  setIndex,
   setTrainingDayId,
   setTrainingTitle,
   setExercises,

@@ -8,7 +8,7 @@ import { ExerciseDetails } from "@/store/types";
 import WorkoutActionButton from "@/components/WorkoutActionButton";
 import { useWorkout } from "@/hooks/useWorkoutScreen";
 
-const WorkoutScreen = ({ route }: any) => {
+const WorkoutScreen = ({ navigation, route }: any) => {
   const {
     id,
     currentExercise,
@@ -49,16 +49,30 @@ const WorkoutScreen = ({ route }: any) => {
 
         <View className="h-2/5 mt-2">
           <Text className="text-lg font-semibold">Previous Workout</Text>
-          <ScrollView className="flex-1 bg-zinc-200 rounded-lg p-2 mb-4" />
+          <ScrollView className="flex-1 bg-zinc-200 rounded-lg p-2 mb-4">
+            {currentExercise.lastWorkoutData
+              ? currentExercise.lastWorkoutData.map((prevWorkoutSet, index) => (
+                  <TrainingDayComponent
+                    key={index}
+                    id={""} //element is readonly, doesnt need an id
+                    title={prevWorkoutSet}
+                    onPress={() => {}}
+                  />
+                ))
+              : ""}
+          </ScrollView>
         </View>
       </View>
 
-      {/* Delete button*/}
+      {/* Complete or Skip the workout*/}
       <WorkoutActionButton
         exerciseIndex={exercise_index}
         exercisesLength={exercises.length}
         onSkip={skipWorkout}
-        onComplete={completeWorkout}
+        onComplete={async () => {
+          await completeWorkout();
+          navigation.goBack();
+        }}
       />
     </SafeAreaView>
   );

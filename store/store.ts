@@ -6,8 +6,8 @@ import counterSlice from "./counterSlice";
 export const store = configureStore({
   reducer: {
     training: trainingReducer,
-    progressReducer,
-    counterSlice,
+    progress: progressReducer,
+    counter: counterSlice,
   },
 });
 

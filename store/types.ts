@@ -5,7 +5,18 @@ export interface TrainingDay {
   id: string;
   title: string;
   content: ExerciseDetails[];
-  history?: Date[]; //save the dates when every training day was completed
+  history?: TrainingDayHistoryObject[]; //save a copy of exercises and a date.now then push it to this array
+}
+
+export interface TrainingDayHistoryObject {
+  date: Date; //date will be displayed as date.toLocaleString()
+  training_day_title: string;
+  exercises_performed: ExerciseDetailsHistory[];
+}
+
+export interface ExerciseDetailsHistory {
+  exercise_title: string;
+  sets_performed_titles: string[];
 }
 
 export interface TrainingState {
@@ -16,7 +27,8 @@ export interface ExerciseDetails {
   id: string;
   title: string;
   setNum: number;
-  sets?: ExerciseDetails[]; //Upper A -> Bench 3x10 -> history -> {history: [80x5, 70x7], date: 17.07.2018}
+  sets?: ExerciseDetails[]; //Upper A -> Bench 3x10 -> history -> {history: [80x5, 70x7], date: 17.07.2018}, current workout only
+  lastWorkoutData?: string[]; //last weeks sets copied
 }
 
 export interface NextTrainingDay {
