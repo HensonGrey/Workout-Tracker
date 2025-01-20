@@ -1,5 +1,5 @@
 import filePath from "@/constants/FilePath";
-import { TrainingDay } from "@/store/types";
+import { TrainingDay, TrainingDayHistoryObject } from "@/store/types";
 import * as FileSystem from "expo-file-system";
 
 //checking if file exists
@@ -88,5 +88,32 @@ export const SaveNameChanges = async (
     });
   } catch (err) {
     console.error(`There was an error updating the name changes!\n${err}`);
+  }
+};
+
+export const FinishedWorkout = async (
+  training_days: TrainingDay[],
+  current_day_index: number,
+  history?: TrainingDayHistoryObject
+) => {
+  try {
+    const data = await ReadFile();
+    data.program.training_days = training_days;
+    data.program.current_day_index = current_day_index;
+
+    if (history) {
+      let updatedDay = data.program.training_days.find(
+        (day: TrainingDay) => day.id == history.id
+      );
+      if (!updatedDay.history) updatedDay.history = [];
+
+      updatedDay.history.push(history);
+    }
+
+    await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
+      encoding: FileSystem.EncodingType.UTF8,
+    });
+  } catch (error) {
+    console.error(`There was an error finishing the workout\n${error}`);
   }
 };

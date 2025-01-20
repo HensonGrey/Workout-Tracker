@@ -15,7 +15,10 @@ import {
   setLastWorkoutSets,
 } from "@/store/trainingSlice";
 import { nextTrainingDay } from "@/store/progressSlice";
-import { SaveNameChanges } from "@/utils/FileSystemHelperFunctions";
+import {
+  FinishedWorkout,
+  SaveNameChanges,
+} from "@/utils/FileSystemHelperFunctions";
 import { resetCounter } from "@/store/counterSlice";
 
 interface WorkoutRouteProps {
@@ -80,6 +83,7 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
   const completeWorkout = async () => {
     try {
       const historyObject: TrainingDayHistoryObject = {
+        id,
         date: new Date(Date.now()),
         training_day_title: title,
         exercises_performed: [],
@@ -94,6 +98,7 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
         historyObject.exercises_performed.push(exerciseInformation);
       });
 
+      //clearing last workout data for this exercise
       exercises.forEach((lastW, index) => {
         if (lastW.lastWorkoutData)
           dispatch(
@@ -101,6 +106,7 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
           );
       });
 
+      //setting the last workout field of this exercise -> mapped from exercise.sets.titles
       exercises.forEach((_, index) => {
         dispatch(
           setLastWorkoutSets({
@@ -128,15 +134,54 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
 
       dispatch(resetCounter());
 
+      //await SaveNameChanges(all_training_days, nextIndex, historyObject)
+
       // Save changes to file system
-      await SaveNameChanges(all_training_days, nextIndex);
+      await FinishedWorkout(all_training_days, nextIndex);
     } catch (err) {
       console.error(`Error completing the workout\n${err}`);
     }
   };
 
-  const skipWorkout = () => {
-    // Implement skip workout logic here
+  const skipWorkout = async () => {
+    try {
+      const historyObject: TrainingDayHistoryObject = {
+        id,
+        date: new Date(Date.now()),
+        training_day_title: title,
+        exercises_performed: [],
+      };
+
+      //clearing last workout data for each exercise
+      exercises.forEach((lastW, index) => {
+        if (lastW.lastWorkoutData)
+          dispatch(
+            clearLastWorkoutSets({ training_day_id: id, exercise_index: index })
+          );
+      });
+
+      // Clear sets for each exercise using the reducer action
+      exercises.forEach((_, index) => {
+        dispatch(
+          setExerciseSets({
+            training_day_id: id,
+            exercise_index: index,
+          })
+        );
+      });
+
+      //calculating the next index to save
+      const nextIndex =
+        (current_training_day_index + 1) % all_training_days.length;
+      // Update training day index in redux
+      dispatch(nextTrainingDay(all_training_days.length));
+
+      dispatch(resetCounter());
+
+      await FinishedWorkout(all_training_days, nextIndex, historyObject);
+    } catch (err) {
+      console.error(`Error skipping this workout\n${err}`);
+    }
   };
 
   return {

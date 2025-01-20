@@ -9,6 +9,7 @@ export interface TrainingDay {
 }
 
 export interface TrainingDayHistoryObject {
+  id: string; //to know to which day's history array to push it
   date: Date; //date will be displayed as date.toLocaleString()
   training_day_title: string;
   exercises_performed: ExerciseDetailsHistory[];
