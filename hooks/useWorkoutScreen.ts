@@ -173,14 +173,16 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
       //calculating the next index to save
       const nextIndex =
         (current_training_day_index + 1) % all_training_days.length;
+
       // Update training day index in redux
       dispatch(nextTrainingDay(all_training_days.length));
-
       dispatch(resetCounter());
 
       await FinishedWorkout(all_training_days, nextIndex, historyObject);
     } catch (err) {
       console.error(`Error skipping this workout\n${err}`);
+      // Log the full error object to get more details
+      console.error(err);
     }
   };
 

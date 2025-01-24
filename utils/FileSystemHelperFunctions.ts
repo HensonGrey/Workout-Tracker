@@ -74,14 +74,10 @@ export const DeleteTrainingDay = async (uuid: string) => {
 };
 
 //saving name changes when user clicks settings in ProgramScreen
-export const SaveNameChanges = async (
-  training_days: TrainingDay[],
-  current_day_index?: number
-) => {
+export const SaveNameChanges = async (training_days: TrainingDay[]) => {
   try {
     const data = await ReadFile();
     data.program.training_days = training_days;
-    data.program.current_day_index = current_day_index;
 
     await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
       encoding: FileSystem.EncodingType.UTF8,
@@ -98,16 +94,18 @@ export const FinishedWorkout = async (
 ) => {
   try {
     const data = await ReadFile();
+
     data.program.training_days = training_days;
     data.program.current_day_index = current_day_index;
 
     if (history) {
-      let updatedDay = data.program.training_days.find(
-        (day: TrainingDay) => day.id == history.id
+      const updatedDay = data.program.training_days.find(
+        (day: TrainingDay) => day.id === history.id
       );
-      if (!updatedDay.history) updatedDay.history = [];
 
-      updatedDay.history.push(history);
+      if (updatedDay && Array.isArray(updatedDay.history)) {
+        updatedDay.history.push(history);
+      }
     }
 
     await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
@@ -115,5 +113,6 @@ export const FinishedWorkout = async (
     });
   } catch (error) {
     console.error(`There was an error finishing the workout\n${error}`);
+    console.error(JSON.stringify(error, null, 2));
   }
 };

@@ -70,7 +70,10 @@ const WorkoutScreen = ({ navigation, route }: any) => {
       <WorkoutActionButton
         exerciseIndex={exercise_index}
         exercisesLength={exercises.length}
-        onSkip={skipWorkout}
+        onSkip={async () => {
+          await skipWorkout();
+          navigation.goBack();
+        }}
         onComplete={async () => {
           await completeWorkout();
           navigation.goBack();
