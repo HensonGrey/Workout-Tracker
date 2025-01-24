@@ -90,7 +90,10 @@ export default function HomeScreen({ navigation }: any) {
           <Text className="text-center text-2xl color-white">start</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity className="flex-[1] justify-center bg-slate-600 rounded-t-2xl border-l-2">
+        <TouchableOpacity
+          className="flex-[1] justify-center bg-slate-600 rounded-t-2xl border-l-2"
+          onPress={() => navigation.navigate("History")}
+        >
           <Text className="text-center text-2xl color-white">history</Text>
         </TouchableOpacity>
       </View>

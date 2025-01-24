@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import WorkoutScreen from "./screens/WorkoutScreen";
 import CustomStackNavigationHeader from "@/components/CustomStackNavigationHeader";
+import HistoryScreen from "./screens/HistoryScreen";
 
 SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ export default function RootLayout() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Program" component={ProgramScreen} />
         <Stack.Screen name="Details" component={ProgramDetailsScreen} />
+        <Stack.Screen name="History" component={HistoryScreen} />
         <Stack.Screen
           name="Workout"
           component={WorkoutScreen}
