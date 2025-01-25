@@ -23,23 +23,23 @@ export default function HomeScreen({ navigation }: any) {
     (state: RootState) => state.training.trainingDays
   );
 
-  const { isLoading } = useTrainingData();
+  const { isLoading } = useTrainingData({ initialLoad: true });
 
   useEffect(() => {
-    if (!isLoading && trainingDays.length > 0) {
-      // Get current training day data (safely)
-      const currentDay = trainingDays[index];
-      // Always update both title and exercises to keep in sync
+    if (trainingDays.length > 0) {
+      const safeIndex = Math.min(index, trainingDays.length - 1);
+      const currentDay = trainingDays[safeIndex];
+
       dispatch(setTrainingDayId(currentDay.id));
       dispatch(setTrainingTitle(currentDay.title));
       dispatch(setExercises(currentDay.content));
-    } else if (trainingDays.length === 0) {
-      // If no training days left, clear the progress data
+    } else {
       dispatch(setTrainingDayId(""));
       dispatch(setTrainingTitle(""));
       dispatch(setExercises([]));
     }
-  }, [isLoading, trainingDays, index]);
+  }, [trainingDays, index]);
+
   return (
     <SafeAreaView className="flex flex-1 flex-col bg-slate-500 h-full">
       <View className="flex-[6] border-2 border-white rounded-2xl p-2 mb-10">
@@ -73,7 +73,6 @@ export default function HomeScreen({ navigation }: any) {
         <TouchableOpacity
           className="flex-[1] justify-center bg-slate-600 rounded-t-2xl"
           onPress={() => {
-            // const firstExercise: ExerciseDetails = exercises[0];
             if (!exercises?.length || !title?.trim()) {
               alert("Cannot start a not defined workout");
               return;
@@ -82,7 +81,6 @@ export default function HomeScreen({ navigation }: any) {
               id,
               title,
               exercises,
-              // exercise_index: 0,
             });
           }}
         >

@@ -1,12 +1,18 @@
-import { View, Text } from "react-native";
-import React from "react";
+import { ScrollView, Text } from "react-native";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
-const HistoryScreen = ({ navigation }: NativeStackScreenProps<any>) => {
+const HistoryScreen = () => {
+  const dispatch = useDispatch();
+  const trainingDays = useSelector(
+    (state: RootState) => state.training.trainingDays
+  );
+
   return (
-    <SafeAreaView>
-      <Text onPress={() => navigation.goBack()}>HistoryScreen</Text>
+    <SafeAreaView className="h-full">
+      <ScrollView></ScrollView>
     </SafeAreaView>
   );
 };

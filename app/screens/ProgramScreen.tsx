@@ -1,19 +1,19 @@
-import { ActivityIndicator } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TrainingDayComponent from "@/components/TrainingDayComponent";
-import PlusIcon from "@/assets/images/plus.png";
-import SettingsIcon from "@/assets/images/settings.png";
+import { useDispatch, useSelector } from "react-redux";
 import uuid from "react-native-uuid";
+
+import { RootState } from "@/store/store";
+import TrainingDayComponent from "@/components/TrainingDayComponent";
 import {
   AddTrainingDay,
   SaveNameChanges,
 } from "@/utils/FileSystemHelperFunctions";
-import { TrainingDay } from "@/store/types";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import { addEmptyTrainingDay, setTrainingDays } from "@/store/trainingSlice";
-import { useTrainingData } from "@/hooks/useTrainingData";
+import { TrainingDay } from "@/store/types";
+
+import PlusIcon from "@/assets/images/plus.png";
+import SettingsIcon from "@/assets/images/settings.png";
 
 const ProgramScreen = ({ navigation }: any) => {
   const dispatch = useDispatch();
@@ -21,17 +21,19 @@ const ProgramScreen = ({ navigation }: any) => {
     (state: RootState) => state.training.trainingDays
   );
 
-  const { isLoading } = useTrainingData({
-    navigation,
-    onNavigateAway: async () => {
+  useEffect(() => {
+    const handleNavigateAway = async () => {
       try {
         dispatch(setTrainingDays([...trainingDaysArray]));
         await SaveNameChanges(trainingDaysArray);
       } catch (error) {
         console.error("Error saving changes:", error);
       }
-    },
-  });
+    };
+
+    navigation.addListener("beforeRemove", handleNavigateAway);
+    return () => navigation.removeListener("beforeRemove", handleNavigateAway);
+  }, [navigation, trainingDaysArray]);
 
   const addTrainingDay = async () => {
     try {
@@ -43,19 +45,9 @@ const ProgramScreen = ({ navigation }: any) => {
       dispatch(addEmptyTrainingDay(initNewEmptyDay));
       await AddTrainingDay(initNewEmptyDay);
     } catch (err) {
-      console.error(
-        `There was an error in addTrainingDay function in ProgramScreen.tsx\n${err}`
-      );
+      console.error("Error adding training day", err);
     }
   };
-
-  if (isLoading) {
-    return (
-      <SafeAreaView className="h-full bg-zinc-300">
-        <ActivityIndicator size="large" />
-      </SafeAreaView>
-    );
-  }
 
   return (
     <SafeAreaView className="h-full bg-zinc-300 p-2">
@@ -76,7 +68,7 @@ const ProgramScreen = ({ navigation }: any) => {
         title=""
         icon={PlusIcon}
         isBlank
-        onPress={() => addTrainingDay()}
+        onPress={addTrainingDay}
       />
     </SafeAreaView>
   );

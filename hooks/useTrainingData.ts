@@ -12,16 +12,17 @@ import { setIndex } from "@/store/progressSlice";
 interface UseTrainingDataProps {
   onNavigateAway?: (trainingDays: TrainingDay[]) => Promise<void>;
   navigation?: any;
+  initialLoad?: boolean;
 }
 
 export const useTrainingData = ({
   onNavigateAway,
   navigation,
+  initialLoad = false,
 }: UseTrainingDataProps = {}) => {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Initialize and load training data
   useEffect(() => {
     let isMounted = true;
 
@@ -35,13 +36,16 @@ export const useTrainingData = ({
         const fileContent = await ReadFile();
 
         if (isMounted) {
-          const validIndex =
-            fileContent.program.current_day_index <
-            fileContent.program.training_days.length
-              ? fileContent.program.current_day_index
-              : 0;
-          dispatch(setTrainingDays(fileContent.program.training_days));
-          dispatch(setIndex(validIndex));
+          const validIndex = fileContent.program.current_day_index;
+          fileContent.program.training_days.length
+            ? fileContent.program.current_day_index
+            : 0;
+
+          if (initialLoad) {
+            dispatch(setTrainingDays(fileContent.program.training_days));
+            dispatch(setIndex(validIndex));
+          }
+
           setIsLoading(false);
         }
       } catch (error) {
@@ -57,9 +61,8 @@ export const useTrainingData = ({
     return () => {
       isMounted = false;
     };
-  }, [dispatch]);
+  }, [dispatch, initialLoad]);
 
-  // Handle navigation cleanup if needed
   useEffect(() => {
     if (navigation && onNavigateAway) {
       const unsubscribe = navigation.addListener(
