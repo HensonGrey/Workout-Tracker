@@ -19,28 +19,27 @@ export default function HomeScreen({ navigation }: any) {
   const { index, id, title, exercises } = useSelector(
     (state: RootState) => state.progress
   );
-  const trainingDay = useSelector(
+  const trainingDays = useSelector(
     (state: RootState) => state.training.trainingDays
   );
 
   const { isLoading } = useTrainingData();
 
   useEffect(() => {
-    if (!isLoading && trainingDay.length > 0) {
+    if (!isLoading && trainingDays.length > 0) {
       // Get current training day data (safely)
-      const currentDay = trainingDay[index];
-
+      const currentDay = trainingDays[index];
       // Always update both title and exercises to keep in sync
       dispatch(setTrainingDayId(currentDay.id));
       dispatch(setTrainingTitle(currentDay.title));
       dispatch(setExercises(currentDay.content));
-    } else if (trainingDay.length === 0) {
+    } else if (trainingDays.length === 0) {
       // If no training days left, clear the progress data
       dispatch(setTrainingDayId(""));
       dispatch(setTrainingTitle(""));
       dispatch(setExercises([]));
     }
-  }, [isLoading, trainingDay, index]);
+  }, [isLoading, trainingDays, index]);
   return (
     <SafeAreaView className="flex flex-1 flex-col bg-slate-500 h-full">
       <View className="flex-[6] border-2 border-white rounded-2xl p-2 mb-10">

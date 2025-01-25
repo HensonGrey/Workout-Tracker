@@ -58,12 +58,14 @@ export const AddTrainingDay = async (training_day: TrainingDay) => {
 };
 
 //deletes by passed trainingDay uuid
-export const DeleteTrainingDay = async (uuid: string) => {
+export const DeleteTrainingDay = async (uuid: string, index?: number) => {
   try {
     const data = await ReadFile();
     data.program.training_days = data.program.training_days.filter(
       (day: TrainingDay) => day.id !== uuid
     );
+
+    if (index) data.program.current_day_index = index;
 
     await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
       encoding: FileSystem.EncodingType.UTF8,

@@ -8,9 +8,15 @@ import {
   deleteTrainingDay,
 } from "@/store/trainingSlice";
 import { DeleteTrainingDay } from "@/utils/FileSystemHelperFunctions";
+import { setIndex } from "@/store/progressSlice";
 
 const useProgramDetails = (parentId: string, navigation: any) => {
   const dispatch = useDispatch();
+
+  const index = useSelector((state: RootState) => state.progress.index);
+  const length = useSelector(
+    (state: RootState) => state.training.trainingDays.length
+  ); //number of training days
   const programDetailsArray = useSelector(
     (state: RootState) =>
       state.training.trainingDays.find((day) => day.id == parentId)?.content
@@ -41,7 +47,10 @@ const useProgramDetails = (parentId: string, navigation: any) => {
   const handleDeleteTrainingDay = async (): Promise<void> => {
     try {
       dispatch(deleteTrainingDay({ idToDelete: parentId })); //redux action
-      await DeleteTrainingDay(parentId); //file system function
+      if (index > 0) dispatch(setIndex(0));
+      //resetting if deleting because i dont want to implement the complete logic
+      // and realistically the user should be punished for modifying the program mid training week
+      await DeleteTrainingDay(parentId, index); //file system function
 
       navigation.goBack();
     } catch (err) {
