@@ -178,7 +178,8 @@ export const useWorkout = (route: { params: WorkoutRouteProps }) => {
       dispatch(nextTrainingDay(all_training_days.length));
       dispatch(resetCounter());
 
-      await FinishedWorkout(all_training_days, nextIndex, historyObject);
+      await FinishedWorkout(all_training_days, nextIndex);
+      // await FinishedWorkout(all_training_days, nextIndex, historyObject);
     } catch (err) {
       console.error(`Error skipping this workout\n${err}`);
       // Log the full error object to get more details

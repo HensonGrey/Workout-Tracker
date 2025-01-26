@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { ErrorScreen } from "@/components/ErrorScreen";
 
 const HistoryScreen = () => {
   const dispatch = useDispatch();
@@ -10,11 +11,7 @@ const HistoryScreen = () => {
     (state: RootState) => state.training.trainingDays
   );
 
-  return (
-    <SafeAreaView className="h-full">
-      <ScrollView></ScrollView>
-    </SafeAreaView>
-  );
+  return <ErrorScreen />;
 };
 
 export default HistoryScreen;

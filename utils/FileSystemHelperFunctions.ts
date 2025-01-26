@@ -97,24 +97,26 @@ export const FinishedWorkout = async (
   try {
     const data = await ReadFile();
 
-    data.program.training_days = training_days;
+    const updatedTrainingDays = data.program.training_days.map(
+      (day: TrainingDay, index: number) =>
+        index === current_day_index
+          ? {
+              ...day,
+              history: history
+                ? [...(day.history || []), history]
+                : day.history,
+            }
+          : day
+    );
+
+    data.program.training_days = updatedTrainingDays;
     data.program.current_day_index = current_day_index;
-
-    if (history) {
-      const updatedDay = data.program.training_days.find(
-        (day: TrainingDay) => day.id === history.id
-      );
-
-      if (updatedDay && Array.isArray(updatedDay.history)) {
-        updatedDay.history.push(history);
-      }
-    }
 
     await FileSystem.writeAsStringAsync(filePath, JSON.stringify(data), {
       encoding: FileSystem.EncodingType.UTF8,
     });
   } catch (error) {
-    console.error(`There was an error finishing the workout\n${error}`);
+    console.error(`Error finishing workout: ${error}`);
     console.error(JSON.stringify(error, null, 2));
   }
 };
